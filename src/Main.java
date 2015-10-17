@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-public class Main extends Application{
+public class Main extends Application {
 
     Stage window;
     Scene sceneMain;
@@ -42,7 +42,7 @@ public class Main extends Application{
         layoutTop.setAlignment(Pos.CENTER);
 
         HBox layoutCenter = new HBox(20);
-        layoutCenter.getChildren().addAll(saveItem, mainCenter,findItem);
+        layoutCenter.getChildren().addAll(saveItem, mainCenter, findItem);
         layoutCenter.setPadding(new Insets(20, 20, 20, 20));
         layoutCenter.setAlignment(Pos.CENTER);
 
@@ -56,11 +56,12 @@ public class Main extends Application{
         mainPane.setCenter(layoutCenter);
         mainPane.setBottom(layoutBot);
 
-        sceneMain = new Scene(mainPane,750,300);
+        sceneMain = new Scene(mainPane, 750, 300);
 
         window.setScene(sceneMain);
         window.setTitle("Walmart Store Helper");
         window.show();
 
     }
+
 }
