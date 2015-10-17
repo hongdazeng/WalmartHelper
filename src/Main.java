@@ -10,10 +10,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Main extends Application {
 
     Stage window;
     Scene sceneMain;
+    ArrayList <ItemLoc> mainList = new ArrayList<>();
 
     public static void main(String[] args) {
         launch(args);
@@ -35,6 +38,19 @@ public class Main extends Application {
 
         Button saveItem = new Button("Save an item");
         Button findItem = new Button("Find a product");
+
+        saveItem.setOnAction(e->{
+            PopupBox newBox = new PopupBox();
+            newBox.storeLogin();
+            if (newBox.getAnswer()){
+                newBox.storeEntry();
+                ItemLoc a = new ItemLoc(newBox.getUPC(),newBox.getLoc());
+                mainList.add(a);
+            } else {
+                PopupBox.displaySimple("Bad Password" , "Please enter a valid password");
+            }
+
+        });
 
         VBox layoutTop = new VBox(20);
         layoutTop.getChildren().addAll(mainTop);
