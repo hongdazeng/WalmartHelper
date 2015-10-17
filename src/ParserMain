@@ -1,0 +1,54 @@
+import java.util.*;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+
+
+public class ParseWalmartFiles {
+
+	public static void main(String[] args) throws IOException, URISyntaxException{
+		// TODO Auto-generated method stub
+		BufferedReader in = new BufferedReader(new FileReader("sample.json"));
+		String y = "";
+		while((y=in.readLine()) !=null)
+		{
+			//Get the indices
+			int indName = y.indexOf("name");
+			int indPrice = y.indexOf("salePrice");
+			int indImage  = y.indexOf("Image");
+			System.out.println(indName+" "+indPrice+" "+indImage);
+			
+			//get the actual data now
+			//start with name
+			StringTokenizer par = new StringTokenizer(y.substring(indName,indPrice),",");
+			System.out.println("The Name: "+par.nextToken().split(":")[1].replace("\"", ""));
+			
+			//next is the sales price
+			par = new StringTokenizer(y.substring(indPrice,indImage),",");
+			System.out.println("The Price: $"+par.nextToken().split(":")[1].replace("\"", ""));
+			
+			//finally, the image URL
+			par = new StringTokenizer(y.substring(indImage),",");
+			String outImage = par.nextToken().split(":")[2].replace("\"", "").replace("//", "");
+			System.out.println("The Image URL: http://"+outImage);
+			
+			//get the image download from URL
+			URL im = new URL("http://"+outImage);
+			Image ou = ImageIO.read(im);
+			//java.awt.Desktop.getDesktop().browse(new URI("http://"+outImage));
+			
+			//save the image to a file
+			BufferedImage fin = (BufferedImage) ou;
+			File outputfile = new File("saved.png");
+		    ImageIO.write(fin, "png", outputfile);
+			
+		}
+		System.out.println("We gucci!");
+	}
+
+}
