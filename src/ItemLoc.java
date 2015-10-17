@@ -14,7 +14,7 @@ public class ItemLoc {
         return upc;
     }
 
-    public String getName() {
+    public String getLoc() {
         return loc;
     }
 }

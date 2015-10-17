@@ -10,13 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main extends Application {
 
     Stage window;
     Scene sceneMain;
-    ArrayList <ItemLoc> mainList = new ArrayList<>();
+    ArrayList<ItemLoc> mainList = new ArrayList<>();
 
     public static void main(String[] args) {
         launch(args);
@@ -39,17 +40,44 @@ public class Main extends Application {
         Button saveItem = new Button("Save an item");
         Button findItem = new Button("Find a product");
 
-        saveItem.setOnAction(e->{
+        saveItem.setOnAction(e -> {
             PopupBox newBox = new PopupBox();
             newBox.storeLogin();
-            if (newBox.getAnswer()){
+            if (newBox.getAnswer()) {
                 newBox.storeEntry();
-                ItemLoc a = new ItemLoc(newBox.getUPC(),newBox.getLoc());
-                mainList.add(a);
+                if (newBox.getStatus()) {
+                    ItemLoc a = new ItemLoc(newBox.getUPC(), newBox.getLoc());
+                    mainList.add(a);
+                    PopupBox.displaySimple("Item Added", "Your item have been saved");
+                }
             } else {
-                PopupBox.displaySimple("Bad Password" , "Please enter a valid password");
+                PopupBox.displaySimple("Bad Password", "Please enter a valid password");
             }
 
+        });
+
+        findItem.setOnAction(e->{
+
+            boolean found = false;
+            PopupBox newBox = new PopupBox();
+            newBox.customerEntry();
+            String entry = newBox.getUserEntry();
+            APIcaller newCall = new APIcaller(entry);
+            double upc = 0;
+            try {
+                upc = newCall.getUPC();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            for (ItemLoc b: mainList){
+                if (b.getUPC() == upc){
+                    PopupBox.displaySimple("Item found", "Your item is at: " + b.getLoc());
+                    found = true;
+                }
+            }
+            if (!found){
+                PopupBox.displaySimple("Item not found", "We are unable to find such an item");
+            }
         });
 
         VBox layoutTop = new VBox(20);

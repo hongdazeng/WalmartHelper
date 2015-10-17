@@ -15,8 +15,11 @@ public class PopupBox {
 
     boolean answer;
 
+    boolean status = true;
     double itemUPC;
     String itemLOC;
+
+    String userEntry;
 
     public static void displaySimple(String title, String message) {
         Stage window = new Stage();
@@ -92,8 +95,13 @@ public class PopupBox {
         final TextField locationInput = new TextField();
         button = new Button("Save");
         button.setOnAction(e -> {
-            itemUPC = Double.parseDouble(upcInput.getText());
-            itemLOC = locationInput.getText();
+            try {
+                itemUPC = Double.parseDouble(upcInput.getText());
+                itemLOC = locationInput.getText();
+            } catch (Exception f){
+                displaySimple("Bad input", "Please enter valid inputs");
+                status = false;
+            }
             window.close();
         });
 
@@ -106,8 +114,43 @@ public class PopupBox {
         window.showAndWait();
     }
 
+    public void customerEntry(){
+        Stage window = new Stage();
+        Button button;
+
+        Label label = new Label("Please enter the item you are searching for");
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("Find an item");
+        window.setWidth(300);
+        window.setHeight(400);
+
+        final TextField nameInput = new TextField();
+        button = new Button("Find");
+        button.setOnAction(e -> {
+            try {
+                userEntry = nameInput.getText();
+            } catch (Exception f){
+                displaySimple("Bad input", "Please enter valid inputs");
+                status = false;
+            }
+            window.close();
+        });
+
+        VBox layout = new VBox(20);
+        layout.getChildren().addAll(label, nameInput, button);
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(layout);
+        window.setScene(scene);
+        window.showAndWait();
+    }
+
     public boolean getAnswer() {
         return answer;
+    }
+
+    public boolean getStatus() {
+        return status;
     }
 
     public double getUPC() {
@@ -116,5 +159,9 @@ public class PopupBox {
 
     public String getLoc() {
         return itemLOC;
+    }
+
+    public String getUserEntry() {
+        return userEntry;
     }
 }
