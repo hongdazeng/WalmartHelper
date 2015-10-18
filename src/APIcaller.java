@@ -113,5 +113,46 @@ public class APIcaller {
 		ImageIO.write(newImage, "png", outputfile);
 		return outputfile;
     }
+      ///the trending things
+    public String trendCall()
+    {
+    	return("http://api.walmartlabs.com/v1/trends?format=json&apiKey=34ktn2ap7hfenq9xv9ry8gv2");
+    }
+    public String dingCall() throws IOException
+    {
+    	try {
+            url = new URL(trendCall());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    	 BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+         String temp;
+
+         while ((temp = in.readLine()) != null) {
+             response += temp;
+         }
+         
+    	return response; 
+    }
+    //value of the Day things
+    public String valueCall()
+    {
+    	return("http://api.walmartlabs.com/v1/vod?format=json&apiKey=u4jxt3fua4jmkbgvzzpba589");
+    }
+    public String dongCall() throws IOException
+    {
+    	try {
+            url = new URL(valueCall());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    	 BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+         String temp;
+
+         while ((temp = in.readLine()) != null) {
+             response += temp;
+         }
+    	return response; 
+    }
 
 }
