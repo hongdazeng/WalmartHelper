@@ -93,16 +93,24 @@ public class APIcaller {
 
     public File getImage(String name)throws Exception
     {
-        String str = doCallResponse;
+        String str = doCall();
         int indImage = str.indexOf("Image");
     	StringTokenizer par = new StringTokenizer(str.substring(indImage),",");
 		String outImage = par.nextToken().split(":")[2].replace("\"", "").replace("//", "");
-        ///write the file
-        URL im = new URL("http://" + outImage);
-        Image ou = ImageIO.read(im);
-		BufferedImage fin = (BufferedImage) ou;
-		File outputfile = new File(name);
-		ImageIO.write(fin, "png", outputfile);
+		
+		///write the file 
+		URL im = new URL("http://"+outImage);
+		BufferedImage ou = ImageIO.read(im);
+		///java.awt.Desktop.getDesktop().browse(new URI("http://"+outImage));
+		
+		//resize the image
+		BufferedImage newImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+		Graphics g = newImage.createGraphics();
+		g.drawImage(ou, 0, 0, 500, 500, null);
+		g.dispose();
+		
+		File outputfile = new File("saved.png");
+		ImageIO.write(newImage, "png", outputfile);
 		return outputfile;
     }
 
