@@ -1,8 +1,4 @@
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -14,13 +10,13 @@ import java.util.StringTokenizer;
  */
 public class APIcaller {
 
+    static String dealCallResponse;
     String productName;
     String newCall;
     URL url;
-
     String response = "";
+    String dealResponse = "";
     double upc;
-
     String doCallResponse;
 
     APIcaller(String productName) {
@@ -91,68 +87,43 @@ public class APIcaller {
 
     }
 
-    public File getImage(String name)throws Exception
-    {
-        String str = doCall();
-        int indImage = str.indexOf("Image");
-    	StringTokenizer par = new StringTokenizer(str.substring(indImage),",");
-		String outImage = par.nextToken().split(":")[2].replace("\"", "").replace("//", "");
-		
-		///write the file 
-		URL im = new URL("http://"+outImage);
-		BufferedImage ou = ImageIO.read(im);
-		///java.awt.Desktop.getDesktop().browse(new URI("http://"+outImage));
-		
-		//resize the image
-		BufferedImage newImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
-		Graphics g = newImage.createGraphics();
-		g.drawImage(ou, 0, 0, 500, 500, null);
-		g.dispose();
-		
-		File outputfile = new File("saved.png");
-		ImageIO.write(newImage, "png", outputfile);
-		return outputfile;
-    }
-      ///the trending things
-    public String trendCall()
-    {
-    	return("http://api.walmartlabs.com/v1/trends?format=json&apiKey=34ktn2ap7hfenq9xv9ry8gv2");
-    }
-    public String dingCall() throws IOException
-    {
-    	try {
-            url = new URL(trendCall());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    	 BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-         String temp;
-
-         while ((temp = in.readLine()) != null) {
-             response += temp;
-         }
-         
-    	return response; 
-    }
-    //value of the Day things
     public String valueCall()
     {
-    	return("http://api.walmartlabs.com/v1/vod?format=json&apiKey=u4jxt3fua4jmkbgvzzpba589");
+        return ("http://api.walmartlabs.com/v1/vod?format=json&apiKey=34ktn2ap7hfenq9xv9ry8gv2");
     }
-    public String dongCall() throws IOException
+
+    public void dealCall() throws IOException
     {
-    	try {
+        try {
             url = new URL(valueCall());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-    	 BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-         String temp;
+        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+        String temp;
 
-         while ((temp = in.readLine()) != null) {
-             response += temp;
-         }
-    	return response; 
+        while ((temp = in.readLine()) != null) {
+            dealResponse += temp;
+        }
+        dealCallResponse = dealResponse;
+    }
+
+    public String getNamedeal() throws IOException {
+        String str = dealCallResponse;
+        int indName = str.indexOf("name");
+        StringTokenizer par = new StringTokenizer(str.substring(indName), ",");
+        //System.out.println("The Name: "+par.nextToken().split(":")[1].replace("\"", ""));
+        return par.nextToken().split(":")[1].replace("\"", "");
+    }
+
+    public double getPricedeal() throws Exception {
+        String str = dealCallResponse;
+        int indPrice = str.indexOf("salePrice");
+        //next is the sales price
+        StringTokenizer par = new StringTokenizer(str.substring(indPrice), ",");
+        //System.out.println("The Price: $"+par.nextToken().split(":")[1].replace("\"", ""));
+        return Double.parseDouble(par.nextToken().split(":")[1].replace("\"", ""));
+
     }
 
 }

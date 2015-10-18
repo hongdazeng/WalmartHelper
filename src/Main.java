@@ -36,6 +36,12 @@ public class Main extends Application {
         Label mainCenter = new Label("< Walmart Associates only || Customers please click >");
         mainCenter.setTextAlignment(TextAlignment.CENTER);
         mainCenter.setWrapText(true);
+        APIcaller dealCaller = new APIcaller("Cake");
+        dealCaller.dealCall();
+        String dealName = dealCaller.getNamedeal();
+        double dealPrice = dealCaller.getPricedeal();
+
+        Label dealBot = new Label("Deal of the day: " + dealName + " for just $" + dealPrice);
         Label mainBot = new Label("Walmart API demo by Hongda Zeng at Boilermake");
         mainBot.setTextAlignment(TextAlignment.CENTER);
         mainBot.setWrapText(true);
@@ -102,7 +108,7 @@ public class Main extends Application {
         layoutCenter.setAlignment(Pos.CENTER);
 
         VBox layoutBot = new VBox(20);
-        layoutBot.getChildren().addAll(mainBot);
+        layoutBot.getChildren().addAll(dealBot, mainBot);
         layoutBot.setPadding(new Insets(20, 20, 20, 20));
         layoutBot.setAlignment(Pos.CENTER);
 

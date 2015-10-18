@@ -4,10 +4,17 @@
 public class ItemLoc {
     double upc;
     String loc;
+    double ourPrice;
 
     ItemLoc(double theUpc, String theLoc) {
         upc = theUpc;
         loc = theLoc;
+    }
+
+    ItemLoc(double theUpc, String theLoc, double thePrice) {
+        upc = theUpc;
+        loc = theLoc;
+        ourPrice = thePrice;
     }
 
     public double getUPC() {
