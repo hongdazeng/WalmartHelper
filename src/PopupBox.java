@@ -1,3 +1,4 @@
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,8 +14,8 @@ import javafx.stage.Stage;
  */
 public class PopupBox {
 
+    static boolean yesNo;
     boolean answer;
-
     boolean status = true;
     double itemUPC;
     String itemLOC;
@@ -43,6 +44,42 @@ public class PopupBox {
         Scene scene = new Scene(layout);
         window.setScene(scene);
         window.showAndWait();
+    }
+
+    public static boolean displayConfirmation(String title, String message) {
+
+        Stage window = new Stage();
+
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle(title);
+        window.setWidth(300);
+        window.setHeight(250);
+
+        Label label = new Label();
+        label.setWrapText(true);
+        label.setText(message);
+        label.setTextAlignment(TextAlignment.CENTER);
+        label.setPadding(new Insets(20, 20, 20, 20));
+        Button yesButton = new Button("Yes");
+        yesButton.setOnAction(e -> {
+            yesNo = true;
+            window.close();
+        });
+        Button noButton = new Button("No");
+        noButton.setOnAction(e -> {
+            yesNo = false;
+            window.close();
+        });
+
+        VBox layout = new VBox(20);
+        layout.getChildren().addAll(label, yesButton, noButton);
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(layout);
+        window.setScene(scene);
+        window.showAndWait();
+
+        return yesNo;
     }
 
     public void storeLogin() {

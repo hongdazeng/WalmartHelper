@@ -10,7 +10,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -29,8 +32,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
+        loadMain();
 
-        Label mainTop = new Label("Welcome to Walmart, please choose an option below to continue");
+        Label mainTop = new Label("Welcome to Walmart, please choose an option below to continue " +
+                "\n(some items have been batch loaded)");
         mainTop.setTextAlignment(TextAlignment.CENTER);
         mainTop.setWrapText(true);
         Label mainCenter = new Label("< Walmart Associates only || Customers please click >");
@@ -41,7 +46,7 @@ public class Main extends Application {
         String dealName = dealCaller.getNamedeal();
         double dealPrice = dealCaller.getPricedeal();
 
-        Label dealBot = new Label("Deal of the day: " + dealName + " for just $" + dealPrice);
+        Label dealBot = new Label("Value of the day: " + dealName + " for just $" + dealPrice);
         Label mainBot = new Label("Walmart API demo by Hongda Zeng at Boilermake");
         mainBot.setTextAlignment(TextAlignment.CENTER);
         mainBot.setWrapText(true);
@@ -123,6 +128,34 @@ public class Main extends Application {
         window.setTitle("Walmart Store Helper");
         window.show();
 
+        window.setOnCloseRequest(e -> {
+            e.consume();
+            boolean exit = PopupBox.displayConfirmation("Exit?", "Are you sure you want to quit?");
+            if (exit) {
+                window.close();
+            }
+
+        });
+
+    }
+
+    public void loadMain() throws IOException {
+        FileInputStream fstream = new FileInputStream("upc.txt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+        String strLine;
+
+
+        while ((strLine = br.readLine()) != null) {
+            String[] splitter = strLine.split(",");
+            mainList.add(new ItemLoc(Double.parseDouble(splitter[0]), splitter[1]));
+        }
+
+        br.close();
     }
 
 }
+
+/*sample upc
+
+ */
