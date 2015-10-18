@@ -46,18 +46,18 @@ public class PopupBox {
         window.showAndWait();
     }
 
-    public static boolean displayConfirmation(String title, String message) {
+    public static boolean displayConfirmation() {
 
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle(title);
+        window.setTitle("Exit?");
         window.setWidth(300);
         window.setHeight(250);
 
         Label label = new Label();
         label.setWrapText(true);
-        label.setText(message);
+        label.setText("Are you sure you want to quit?");
         label.setTextAlignment(TextAlignment.CENTER);
         label.setPadding(new Insets(20, 20, 20, 20));
         Button yesButton = new Button("Yes");
@@ -135,7 +135,7 @@ public class PopupBox {
             try {
                 itemUPC = Double.parseDouble(upcInput.getText());
                 itemLOC = locationInput.getText();
-            } catch (Exception f){
+            } catch (Exception f) {
                 displaySimple("Bad input", "Please enter valid inputs");
                 status = false;
             }
@@ -151,7 +151,7 @@ public class PopupBox {
         window.showAndWait();
     }
 
-    public void customerEntry(){
+    public void customerEntry() {
         Stage window = new Stage();
         Button button;
 
@@ -166,7 +166,7 @@ public class PopupBox {
         button.setOnAction(e -> {
             try {
                 userEntry = nameInput.getText();
-            } catch (Exception f){
+            } catch (Exception f) {
                 displaySimple("Bad input", "Please enter valid inputs");
                 status = false;
             }

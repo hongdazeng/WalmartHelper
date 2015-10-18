@@ -82,8 +82,6 @@ public class Main extends Application {
                 upc = newCall.getUPC();
                 price = newCall.getPrice();
                 itemName = newCall.getName();
-            } catch (IOException e1) {
-                e1.printStackTrace();
             } catch (Exception e1) {
                 e1.printStackTrace();
                 upc = -1;
@@ -130,7 +128,7 @@ public class Main extends Application {
 
         window.setOnCloseRequest(e -> {
             e.consume();
-            boolean exit = PopupBox.displayConfirmation("Exit?", "Are you sure you want to quit?");
+            boolean exit = PopupBox.displayConfirmation();
             if (exit) {
                 window.close();
             }

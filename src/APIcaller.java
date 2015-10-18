@@ -19,6 +19,8 @@ public class APIcaller {
     double upc;
     String doCallResponse;
 
+    String APIkey = "fill me"; // TODO: Fill in your own API key to get data
+
     APIcaller(String productName) {
         this.productName = productName;
         this.newCall = buildCall();
@@ -36,7 +38,7 @@ public class APIcaller {
 
     public String buildCall() {
         return ("http://api.walmartlabs.com/v1/search?" +
-                "query=" + productName + "&format=json&apiKey=34ktn2ap7hfenq9xv9ry8gv2");
+                "query=" + productName + "&format=json&apiKey=" + APIkey);
     }
 
     public void doCall() throws IOException {
@@ -56,7 +58,7 @@ public class APIcaller {
         doCallResponse = response;
     }
 
-    public double getUPC() throws IOException {
+    public double getUPC() {
 
         String callResponse = doCallResponse;
 
@@ -67,33 +69,30 @@ public class APIcaller {
 
         return upc;
     }
-    public String getName() throws IOException
-    {
+
+    public String getName() {
         String str = doCallResponse;
         int indName = str.indexOf("name");
-        StringTokenizer par = new StringTokenizer(str.substring(indName),",");
-		//System.out.println("The Name: "+par.nextToken().split(":")[1].replace("\"", ""));
-		return par.nextToken().split(":")[1].replace("\"", "");
+        StringTokenizer par = new StringTokenizer(str.substring(indName), ",");
+        //System.out.println("The Name: "+par.nextToken().split(":")[1].replace("\"", ""));
+        return par.nextToken().split(":")[1].replace("\"", "");
     }
 
-    public double getPrice() throws Exception
-    {
+    public double getPrice() {
         String str = doCallResponse;
         int indPrice = str.indexOf("salePrice");
         //next is the sales price
-		StringTokenizer par = new StringTokenizer(str.substring(indPrice),",");
-		//System.out.println("The Price: $"+par.nextToken().split(":")[1].replace("\"", ""));
-		return Double.parseDouble(par.nextToken().split(":")[1].replace("\"", ""));
+        StringTokenizer par = new StringTokenizer(str.substring(indPrice), ",");
+        //System.out.println("The Price: $"+par.nextToken().split(":")[1].replace("\"", ""));
+        return Double.parseDouble(par.nextToken().split(":")[1].replace("\"", ""));
 
     }
 
-    public String valueCall()
-    {
-        return ("http://api.walmartlabs.com/v1/vod?format=json&apiKey=34ktn2ap7hfenq9xv9ry8gv2");
+    public String valueCall() {
+        return ("http://api.walmartlabs.com/v1/vod?format=json&apiKey=" + APIkey);
     }
 
-    public void dealCall() throws IOException
-    {
+    public void dealCall() throws IOException {
         try {
             url = new URL(valueCall());
         } catch (MalformedURLException e) {
@@ -108,7 +107,7 @@ public class APIcaller {
         dealCallResponse = dealResponse;
     }
 
-    public String getNamedeal() throws IOException {
+    public String getNamedeal() {
         String str = dealCallResponse;
         int indName = str.indexOf("name");
         StringTokenizer par = new StringTokenizer(str.substring(indName), ",");
@@ -116,7 +115,7 @@ public class APIcaller {
         return par.nextToken().split(":")[1].replace("\"", "");
     }
 
-    public double getPricedeal() throws Exception {
+    public double getPricedeal() {
         String str = dealCallResponse;
         int indPrice = str.indexOf("salePrice");
         //next is the sales price
