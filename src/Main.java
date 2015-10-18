@@ -19,6 +19,9 @@ public class Main extends Application {
     Scene sceneMain;
     ArrayList<ItemLoc> mainList = new ArrayList<>();
 
+    Double price;
+    String itemName;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -56,7 +59,7 @@ public class Main extends Application {
 
         });
 
-        findItem.setOnAction(e->{
+        findItem.setOnAction(e -> {
 
             boolean found = false;
             PopupBox newBox = new PopupBox();
@@ -66,17 +69,25 @@ public class Main extends Application {
             double upc = 0;
             try {
                 upc = newCall.getUPC();
+                price = newCall.getPrice();
+                itemName = newCall.getName();
             } catch (IOException e1) {
                 e1.printStackTrace();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                upc = -1;
             }
-            for (ItemLoc b: mainList){
-                if (b.getUPC() == upc){
-                    PopupBox.displaySimple("Item found", "Your item is at: " + b.getLoc());
+            for (ItemLoc b : mainList) {
+                if (b.getUPC() == upc) {
+                    PopupBox.displaySimple("Item found", "Best match for your search is: " + itemName +
+                            "\nIt can be found at " + b.getLoc() + "\nfor $" + price);
                     found = true;
                 }
             }
-            if (!found){
-                PopupBox.displaySimple("Item not found", "We are unable to find such an item");
+            if (!found) {
+                PopupBox.displaySimple("Item not found", "We are unable to find such an item in this store. " +
+                        "\nPlease consider the following item from Walmart.com" +
+                        "\n" + itemName + " - $" + price);
             }
         });
 

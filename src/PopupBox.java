@@ -26,7 +26,7 @@ public class PopupBox {
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
-        window.setWidth(300);
+        window.setWidth(450);
         window.setHeight(200);
 
         Label label = new Label();
@@ -121,7 +121,7 @@ public class PopupBox {
         Label label = new Label("Please enter the item you are searching for");
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Find an item");
-        window.setWidth(300);
+        window.setWidth(400);
         window.setHeight(400);
 
         final TextField nameInput = new TextField();
